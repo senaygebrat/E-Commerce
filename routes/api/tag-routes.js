@@ -1,11 +1,13 @@
 const router = require('express').Router();
-const { Tag, Product, ProductTag } = require('../../models');
+// const { restart } = require('nodemon');
+const { Tag, Product } = require('../../models');
 
 // The `/api/tags` endpoint
 
-router.get('/', (req, res) => {
+
   // find all tags
   // be sure to include its associated Product data
+router.get('/', (req, res) => {
   Tag.findAll({
     include: [{ model: Product }],
   })
@@ -20,7 +22,7 @@ router.get('/:id', (req, res) => {
   // be sure to include its associated Product data
   Tag.findOne({
     where: {id: req.params.id},
-    include: [{model: Product}],
+    // include: [{model: Product}], does it matter?
   })
   .then((categories) =>
   res.json(categories))
@@ -28,33 +30,79 @@ router.get('/:id', (req, res) => {
     res.status(400).json(err));
 });
 
-router.post('/', (req, res) => {
-  // create a new tag
-  Tag.create(
-    req.body
+  // find a single tag by its `id`
+  // be sure to include its associated Product data
+// router.get('/:id', async (req, res) => {
+//   try{
+//     const oneTag = await Tag.findByPk({
+//       id: req.body.id,
+//     },
+//     {
+//       where: {
+//         id: req.params.id
+//       }
+//     })
+//     res.status(200).json(oneTag)
+//   }
+//   catch(err){
+//     res.status(400).json(err)
+//   }
+// });
+
+
+// create a new tag
+// router.post('/', (req, res) => {
+//   Tag.create(
+//     req.body
+//     )
+//     .then((tag) =>
+//     res.json(tag))
+//     .catch((err) =>
+//       res.status(400).json(err));
+  
+// });
+
+router.post('/', async (req, res) => {
+  try{
+    const newTag = await Tag.create({
+      tag_name: req.body.tag_name,
+    },
+    // {
+    //   where: {
+    //     id: req.params.id
+    //   }
+    // }
     )
-    .then((tag) =>
-    res.json(tag))
-    .catch((err) =>
-      res.status(400).json(err));
-  
-});
+    res.status(200).json(newTag)
+  }
+  catch(err){
+    res.status(400).json(err)
+  }
+})
 
-router.put('/:id', (req, res) => {
+
+
   // update a tag's name by its `id` value
-  Tag.update(
-    req.body,{
-      where: {id: req.params.id,},
+router.put('/:id', async (req, res) => {
+  try{
+    const updTag = await Tag.update({
+      tag_name: req.body.tag_name
+    },
+    {
+      where: {
+        id: req.params.id
+      }
     })
-    .then((tag) =>
-    res.json(tag))
-    .catch((err) =>
-      res.status(400).json(err));
-  
-});
+    res.status(200).json(updTag)
+  }
+  catch(err){
+    res.status(400).json(err)
+  }
+})
 
-router.delete('/:id', (req, res) => {
+
   // delete on tag by its `id` value
+router.delete('/:id', (req, res) => {
   Tag.destroy(
     {
       where: {id: req.params.id},
