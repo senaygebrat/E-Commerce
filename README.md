@@ -3,7 +3,7 @@
 ![Preview](./Assets/images/ecommerce.gif)
 
 ## Description
-E-Commerce is an app that allows a user to get, create, update, and delete data in the database. Please refer to the [video](https://youtu.be/YrWdJJ0Le1o) for a walkthrough demonstration.
+E-Commerce is an app that allows a user to get, create, update, and delete data in the database. Please refer to the [video](https://youtu.be/-UYPqTysXoM) for a walkthrough demonstration.
 
 ## Code Snippet
 
